@@ -1,0 +1,3 @@
+[submodule "videojs-contrib-hls"]
+	path = vendor/videojs-contrib-hls
+	url = git://github.com/videojs/videojs-contrib-hls.git
