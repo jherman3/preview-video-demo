@@ -17,5 +17,5 @@ $loc =~ /{"Key":"streamingUrl","Value":\["(.+)"\]/;
 $loc = $1;
 print "Writing URL $loc to source.json\n";
 open(my $fh, '>', "source.json");
-print $fh '{"source":"' . $loc . '"}';
+print $fh '{"source":"' . $loc . '"}' . "\n";
 close($fh);
