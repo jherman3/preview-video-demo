@@ -13,9 +13,9 @@ if($? != 0) {
 my $url = $ARGV[0];
 my $loc = `preview renderV2 --verbose --verbose localhost:8080 --template video $url 2>&1`;
 
-if($loc =~ /{"Key":"streamingUrl","Value":\["(.+)"\]/) {
+if($loc =~ /"fileId":\s*"(.+?)"/) {
     $loc = $1;
-    print "Writing URL $loc to source.json\n";
+    print "Writing ID $loc to source.json\n";
     open(my $fh, '>', "source.json");
     print $fh '{"source":"' . $loc . '"}' . "\n";
     close($fh);
