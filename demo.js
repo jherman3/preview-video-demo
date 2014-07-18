@@ -6,10 +6,6 @@ var createPlayer = function() {
     return p;
 };
 
-var setPlayerSource = function(url) {
-    player.src(url);
-};
-
 var player = null;
 var videoComplete = false;
 var updater = null;
@@ -27,19 +23,23 @@ var getVideoInfo = function(id) {
         status = data["Status"];
         url = data["Attributes"][0]["Value"][0];
     });
-    return [(status === "complete"), url];
+    return [status, url];
 };
 
 $(function() {
     player = createPlayer();
+    player.bigPlayButton.hide();
+    player.loadingSpinner.show();
     // Get the source asset ID from the json file
     // This is a workaround to allow the page to get the source asset ID with this demo page
     $.getJSON("source.json", function(sourceAsset) {
+	// Poll the preview daemon every second to check if the video is ready
         updater = setInterval(function() {
             var info = getVideoInfo(sourceAsset["source"]);
-            console.log(info);
-            if (info[0] == true) {
-                setPlayerSource(info[1]);
+            if (info[0] === "complete") {
+                player.src(info[1]);
+		player.loadingSpinner.hide();
+		player.bigPlayButton.show();
                 clearInterval(updater);
             }
         }, 1000);
