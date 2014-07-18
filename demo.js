@@ -33,13 +33,16 @@ $(function() {
     // Get the source asset ID from the json file
     // This is a workaround to allow the page to get the source asset ID with this demo page
     $.getJSON("source.json", function(sourceAsset) {
-	// Poll the preview daemon every second to check if the video is ready
+        // Poll the preview daemon every second to check if the video is ready
         updater = setInterval(function() {
+            if (videoComplete)
+                return;
             var info = getVideoInfo(sourceAsset["source"]);
             if (info[0] === "complete") {
+                videoComplete = true;
                 player.src(info[1]);
-		player.loadingSpinner.hide();
-		player.bigPlayButton.show();
+                player.loadingSpinner.hide();
+                player.bigPlayButton.show();
                 clearInterval(updater);
             }
         }, 1000);
